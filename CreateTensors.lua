@@ -1,6 +1,5 @@
 local CreateTensors = {}
 
-
 -- Split string
 function string:split(sep)
   local sep, fields = sep, {}
@@ -15,6 +14,7 @@ local function generateTensors(csv_type)
 	local outputFilePath = 'tensors/' .. csv_type ..'.th7'
 
 	print('reading csv...')
+	
 	-- Count number of rows and columns in file
 	local i = 0
 	for line in io.lines(inputFilePath) do
@@ -29,7 +29,6 @@ local function generateTensors(csv_type)
 	-- Read data from CSV to tensor
 	local csvFile = io.open(inputFilePath, 'r')
 	local header = csvFile:read()
-
 	local data = torch.Tensor(ROWS, COLS)
 
 	local i = 0

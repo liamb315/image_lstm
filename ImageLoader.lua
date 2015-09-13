@@ -9,7 +9,7 @@ local ImageLoader = {}
 ImageLoader.__index = ImageLoader  
 
 
-function ImageLoader.create(tensor_x_file, tensor_y_file, batch_size, seq_length, rnn_size)
+function ImageLoader.create(tensor_x_file, tensor_y_file, batch_size, seq_length, input_size)
 	local self = {}
 	setmetatable(self, ImageLoader)
 
@@ -19,7 +19,7 @@ function ImageLoader.create(tensor_x_file, tensor_y_file, batch_size, seq_length
 	local x_data = torch.load(tensor_x_file)
 	local y_data = torch.load(tensor_y_file)
 
-	-- cut off the end so that it divides evenly
+	-- Cut off the end so that it divides evenly
     local len = x_data:size(1)
     if len % (batch_size * seq_length) ~= 0 then
         print('cutting off end of data so that the batches/sequences divide evenly')
@@ -32,16 +32,15 @@ function ImageLoader.create(tensor_x_file, tensor_y_file, batch_size, seq_length
 	-- Consistency checks on length of x_data, y_data
 	assert(x_data:size(1) == y_data:size(1))
 
-	self.nbatches = x_data:size(1)/(batch_size*seq_length)
+	self.nbatches          = x_data:size(1)/(batch_size*seq_length)
 	
-	local num_images     = x_data:size(1)
-	local num_properties = num_images/seq_length
+	local num_images       = x_data:size(1)
+	local num_properties   = num_images/seq_length --Assumes that each property has seq_length images
 
 	print('reshaping tensors...')
-	self.x_data = x_data:reshape(num_properties, seq_length, rnn_size)
-	self.y_data = y_data:reshape(num_properties, seq_length)
-
-	self.current_batch = 0
+	self.x_data            = x_data:reshape(num_properties, seq_length, input_size)
+	self.y_data            = y_data:reshape(num_properties, seq_length)
+	self.current_batch     = 0
 	self.evaluated_batches = 0 -- number of times next_batch() called
 
 	print('data load complete.')
