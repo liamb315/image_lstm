@@ -10,18 +10,18 @@ local CreateTensors = require 'CreateTensors'
 
 -- Options of the model
 local opt = {print_every      = 1,
- 			 x_csv            = "x_rep", --Just use 'filename' for 'filename.csv'
+             x_csv            = "x_rep", --Just use 'filename' for 'filename.csv'
              y_csv            = "y_rep", 
-  			 seed             = 1,
-  			 batch_size       = 16,
+             seed             = 1,
+             batch_size       = 16,
              input_size       = 10,
-  			 rnn_size         = 100,
-  			 output_size      = 10,
-  			 savefile         = "snapshots/model_snapshot.t7",
-  			 save_every       = 100,
-  			 seq_length       = 39,
-  			 max_epochs       = 10,
-             init_learn_rate  = 1E-2,  
+             rnn_size         = 100,
+             output_size      = 10,
+             savefile         = "snapshots/model_snapshot.t7",
+             save_every       = 100,
+             seq_length       = 39,
+             max_epochs       = 10,
+             init_learn_rate  = 1E-2,
              learn_rate_decay = 1E-3  --https://github.com/torch/optim/blob/master/adagrad.lua
              }
 
