@@ -45,9 +45,7 @@ local function generateTensors(csv_type)
 
 	print('serializing tensor...')
 	torch.save(outputFilePath, data)
-
 end
-
 
 CreateTensors.generateTensors = generateTensors
 

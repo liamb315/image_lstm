@@ -20,7 +20,7 @@ local opt = {print_every     = 1,
   			 save_every      = 100,
   			 seq_length      = 39,
   			 max_epochs      = 10,
-             init_learn_rate = 10,  
+             init_learn_rate = 1,  
              dec_learn_rate  = 1000,
              dec_rate_by     = 0.5
              }
@@ -106,8 +106,15 @@ function feval(params_)
         --print(lstm_c[t], lstm_h[t])
         --print(clones.criterion[t]:forward(predictions[t], y[{{}, t}]))  
         --print(y[{{}, t}])
+        
+        -- OLD Loss
         -- Add the average loss across the batch
-        loss = loss + clones.criterion[t]:forward(predictions[t], y[{{}, t}])
+        --loss = loss + clones.criterion[t]:forward(predictions[t], y[{{}, t}])
+
+        -- NEW Loss based only on the last example of sequence
+        if t == opt.seq_length then
+            loss = loss + clones.criterion[t]:forward(predictions[t], y[{{}, t}])
+        end
         --print('loss: '.. loss)
     end
 
