@@ -15,12 +15,13 @@ addRows <- function(dat, numRowsNeeded) {
 
 # Repeat the same property ID N-times
 image_lookup  <- read.csv('/Users/liamf/AmazonEC2/king_county/king_image_table.csv')
-data          <- read.table("~/AmazonEC2/oxford_lstm/image/data/output_zestimate_error.txt", quote="\"", comment.char="")
-names(data)[1:13]<-c("image_id","trueDecile","prob1","prob2","prob3","prob4","prob5","prob6","prob7","prob8","prob9","prob10","predDecile")
+data          <- read.table("~/AmazonEC2/king_county/hidden_layer_output.txt", quote="\"", comment.char="")
+colnames(data)[1] <- 'image_id'
+colnames(data)[2] <- 'trueDecile'
 
 data <- merge(data, image_lookup, by="image_id")
-data$predDecile <- NULL
-data$trueDecile <- data$trueDecile + 1  # Lua is 1-indexed 
+#data$predDecile <- NULL
+#data$trueDecile <- data$trueDecile + 1  # Lua is 1-indexed 
 
 
 library(dplyr)
@@ -38,11 +39,11 @@ repData <- data %>%
              group_by(PropertyID) %>%
              do({addRows(., maxImages)})
 
-x <- repData[,c(3:12)]
+x <- repData[-c(1:2)]
 y <- repData[,c(2)]
 
-write.table(x, file="x_rep.csv", sep = "," , row.names=FALSE)
-write.table(y, file="y_rep.csv", sep = ",", row.names=FALSE)
+write.table(x, file="x_hidden_rep.csv", sep = "," , row.names=FALSE)
+write.table(y, file="y_hidden_rep.csv", sep = ",", row.names=FALSE)
 
 
 
