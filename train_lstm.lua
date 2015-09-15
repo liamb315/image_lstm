@@ -3,6 +3,7 @@ require 'torch'
 require 'nn'
 require 'nngraph'
 require 'optim'
+
 local LSTM = require 'LSTM' 
 local model_utils = require 'model_utils'
 local ImageLoader = require 'ImageLoader'
@@ -10,12 +11,14 @@ local CreateTensors = require 'CreateTensors'
 
 -- Options of the model
 local opt = {print_every      = 1,
-             x_csv            = "x_hidden_rep", --Just use 'filename' for 'filename.csv'
-             y_csv            = "y_hidden_rep", 
+             csv_path         = "data/",
+             tensor_path      = "tensors/",
+             x_csv            = "x_train_mini", --Just use 'filename' for 'filename.csv'
+             y_csv            = "y_train_mini", 
              seed             = 1,
              batch_size       = 16,
              input_size       = 4096,
-             rnn_size         = 100,
+             rnn_size         = 256,
              output_size      = 10,
              savefile         = "snapshots/model_snapshot.t7",
              save_every       = 100,
@@ -29,12 +32,12 @@ print(opt)
 torch.manualSeed(opt.seed)
 
 -- Generate tensors
-CreateTensors.generateTensors(opt.x_csv)
-CreateTensors.generateTensors(opt.y_csv)
+--CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
+--CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
 -- Load data from tensors
-local x_tensor = 'tensors/'..opt.x_csv..'.th7'
-local y_tensor = 'tensors/'..opt.y_csv..'.th7'
+local x_tensor = opt.tensor_path .. opt.x_csv .. '.th7'
+local y_tensor = opt.tensor_path .. opt.y_csv .. '.th7'
 
 local loader = ImageLoader.create(x_tensor, y_tensor, opt.batch_size, opt.seq_length, opt.input_size)
 

@@ -9,9 +9,10 @@ function string:split(sep)
 end
 
 -- Generate the tensors and save to tensors directory
-local function generateTensors(csv_type)
-	local inputFilePath  = 'data/' .. csv_type ..'.csv'
-	local outputFilePath = 'tensors/' .. csv_type ..'.th7'
+local function generateTensors(csv_type, csv_path, tensor_path)
+
+	local inputFilePath  = csv_path .. csv_type ..'.csv'
+	local outputFilePath = tensor_path .. csv_type ..'.th7'
 
 	print('reading csv...')
 	
@@ -33,6 +34,9 @@ local function generateTensors(csv_type)
 
 	local i = 0
 	for line in csvFile:lines('*l') do
+	  if i % 5000 == 0 then
+	  	print(' line: ', i)
+	  end
 	  i = i + 1
 	  local l = line:split(',')
 	  for key, val in ipairs(l) do
