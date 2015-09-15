@@ -9,8 +9,8 @@ local ImageLoader = require 'ImageLoader'
 local opt = {seed       = 1,
 			 model      = 'snapshots/model_snapshot.t7',
 			 x_csv      = 'x_mini',  --Just use 'filename' for 'filename.csv'
-			 y_csv      = 'y_mini'   --Just use 'filename' for 'filename.csv'
-			 rnn_size   = 256,
+			 y_csv      = 'y_mini',  --Just use 'filename' for 'filename.csv'
+			 rnn_size   = 256
 			}
 
 print(opt)
