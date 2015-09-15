@@ -33,6 +33,8 @@ maxImages <- data %>%
              select(n) %>%
              unlist(use.names = FALSE)
 
+maxImages <- 39
+
 propertyVec <- unique(data$PropertyID)
 
 repData <- data %>%

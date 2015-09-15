@@ -16,3 +16,4 @@ th train.lua
 
 # Questions
 1.  Representation is sparse at the hidden layer FC7, concerning?
+2.  Fix the max-sequence for each image (training and testing) and just generally devise a better strategy here.

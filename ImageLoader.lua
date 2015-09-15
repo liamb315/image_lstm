@@ -1,5 +1,4 @@
 -- Loader for image-level models
-
 require 'torch'
 require 'math'
 

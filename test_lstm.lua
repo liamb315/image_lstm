@@ -9,11 +9,12 @@ local ImageLoader   = require 'ImageLoader'
 local opt = {seed        = 1,
 			 csv_path    = 'data/',
 			 tensor_path = 'tensors/',
+			 output_path = 'output/',
 			 model       = 'snapshots/model_snapshot.t7',
 			 x_csv       = 'x_test_mini',  --Just use 'filename' for 'filename.csv'
 			 y_csv       = 'y_test_mini',  --Just use 'filename' for 'filename.csv'
 			 seq_length  = 39,
-			 batch_size  = 1,              -- TOOD: Check this
+			 batch_size  = 3,              -- TOOD: Check this
 			 input_size  = 4096,
 			 rnn_size    = 256
 			}
@@ -22,8 +23,8 @@ print(opt)
 torch.manualSeed(opt.seed)
 
 -- Generate tensors (needed if the tensors are not already created)
---CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
---CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
+CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
+CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
 -- load data from tensors
 local x_tensor = opt.tensor_path .. opt.x_csv .. '.th7'
@@ -54,8 +55,8 @@ function evaluate_batch()
 	local batch_correct = 0
 
 	local x, y = loader:next_image_batch() 
-	--print(x)
-	--print(y)
+	print(y)
+	print(y[{{},15}])
 
 	for t = 1, seq_length do		
 		local linear_net     = protos.linear:forward(x[{{}, t}])
@@ -91,7 +92,7 @@ for i = 1, iterations do
 end
 
 -- TODO:  Fix this
-print('Percent correct ', total_correct/iterations)
+print('Percent correct ', total_correct/(iterations/opt.batch_size))
 
 
 

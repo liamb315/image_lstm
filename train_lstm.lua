@@ -32,8 +32,8 @@ print(opt)
 torch.manualSeed(opt.seed)
 
 -- Generate tensors (needed if the tensors are not already created)
---CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
---CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
+CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
+CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
 -- Load data from tensors
 local x_tensor = opt.tensor_path .. opt.x_csv .. '.th7'
@@ -77,9 +77,6 @@ function feval(params_)
 
     ------------------ get minibatch -------------------
     local x, y = loader:next_image_batch() 
-
-    --print('x', x)
-    --print('y', y)
 
     ------------------- forward pass -------------------
     local linear_nets = {}
