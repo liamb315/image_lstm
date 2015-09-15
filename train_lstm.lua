@@ -31,7 +31,7 @@ local opt = {print_every      = 1,
 print(opt)
 torch.manualSeed(opt.seed)
 
--- Generate tensors
+-- Generate tensors (needed if the tensors are not already created)
 --CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
 --CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
