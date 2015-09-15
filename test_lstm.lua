@@ -49,43 +49,49 @@ local seq_length = opt.seq_length
 local prev_c = torch.zeros(1, opt.rnn_size)
 local prev_h = prev_c:clone()
 
-local correct = 0
 
-local x, y = loader:next_image_batch() 
+function evaluate_batch()
+	local batch_correct = 0
 
-for t = 1, seq_length do
-	--print('Iteration: '.. t)
-	print(x)
-	print(x[{{}, t}])
-	print(y)
-	print(y[{{}, t}])
-	print(y[t])
-	local linear_net     = protos.linear:forward(x[{{}, t}])
-	local next_c, next_h = unpack(protos.lstm:forward{linear_net, prev_c, prev_h})
-	prev_c:copy(next_c)
-    prev_h:copy(next_h)
-	
-    --print('lstm weights')
-    --print(protos.lstm:parameters())
+	local x, y = loader:next_image_batch() 
+	--print(x)
+	--print(y)
 
-    if t == seq_length then
-		local log_probs = protos.softmax:forward(next_h)
-		local _, argmax = log_probs:max(1)
-		print('Actual:', y[{{}, t}])
-		print('Prediction:', argmax)	
+	for t = 1, seq_length do		
+		local linear_net     = protos.linear:forward(x[{{}, t}])
+		local next_c, next_h = unpack(protos.lstm:forward{linear_net, prev_c, prev_h})
+		prev_c:copy(next_c)
+	    prev_h:copy(next_h)
 		
-		if y[{{}, t}] == argmax then
-			correct = correct + 1
+	    if t == seq_length then
+			local log_probs = protos.softmax:forward(next_h)
+			local _, argmax = torch.max(log_probs, 2)
+			
+			print('Actual    :', y[{{}, t}][1])
+			print('Prediction:', argmax[1][1])	
+			
+			if y[{{}, t}][1] == argmax[1][1] then
+				batch_correct = batch_correct + 1
+			end
+			--print('softmax weights')
+			--print(protos.softmax:parameters()[1])
 		end
-		--print('softmax weights')
-		--print(protos.softmax:parameters()[1])
-		--print('log-probs')
-		--print(log_probs)
 	end
+	return batch_correct
 end
 
 print('Total properties correct: ', correct)
 
-------------------- Output -------------------
+local total_correct = 0
+local iterations    = loader.nbatches
+
+for i = 1, iterations do
+	total_correct = total_correct + evaluate_batch()
+
+end
+
+-- TODO:  Fix this
+print('Percent correct ', total_correct/iterations)
+
 
 
