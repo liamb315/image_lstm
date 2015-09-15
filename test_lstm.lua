@@ -55,7 +55,11 @@ local x, y = loader:next_image_batch()
 
 for t = 1, seq_length do
 	--print('Iteration: '.. t)
-	--print(x[{{}, t}])
+	print(x)
+	print(x[{{}, t}])
+	print(y)
+	print(y[{{}, t}])
+	print(y[t])
 	local linear_net     = protos.linear:forward(x[{{}, t}])
 	local next_c, next_h = unpack(protos.lstm:forward{linear_net, prev_c, prev_h})
 	prev_c:copy(next_c)
