@@ -15,7 +15,7 @@ addRows <- function(dat, numRowsNeeded) {
 }
 
 # Train set
-train <- read.csv('/Users/liamf/lstm_data/train_rnn_dictionary.txt')
+train <- read.csv('/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/train_rnn_dictionary.txt')
 colnames(train)[1] <- 'PropertyID'
 colnames(train)[2] <- 'ImageID'
 colnames(train)[3] <- 'TrueDecile'

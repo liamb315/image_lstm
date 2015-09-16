@@ -13,8 +13,8 @@ local opt = {seed        = 1,
 			 model       = 'snapshots/model_snapshot.t7',
 			 x_csv       = 'x_test_selldecile_mini',  --Just use 'filename' for 'filename.csv'
 			 y_csv       = 'y_test_selldecile_mini',  --Just use 'filename' for 'filename.csv'
-			 seq_length  = 39, 
-			 batch_size  = 1,              -- TOOD: Check this
+			 seq_length  = 20, 
+			 batch_size  = 2,              -- TOOD: Check this
 			 input_size  = 4096,
 			 rnn_size    = 256
 			}
@@ -23,8 +23,8 @@ print(opt)
 torch.manualSeed(opt.seed)
 
 -- Generate tensors (needed if the tensors are not already created)
-CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
-CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
+--CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
+--CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
 -- load data from tensors
 local x_tensor = opt.tensor_path .. opt.x_csv .. '.th7'
@@ -41,9 +41,6 @@ local loader = ImageLoader.create(x_tensor, y_tensor, opt.batch_size, opt.seq_le
 
 
 ------------------- Predictions -------------------
--- TODO
---  Retrieve seq_length from the 2-Tensor
---local seq_length = x_tensor:size(1)
 local seq_length = opt.seq_length
 
 -- LSTM initial state, note that we're using minibatches OF SIZE ONE here
@@ -56,7 +53,6 @@ function evaluate_batch()
 
 	------------------ get minibatch -------------------
 	local x, y = loader:next_image_batch() 
-	--print(x)
 	
 	------------------ predict batch -------------------
 	for t = 1, seq_length do		

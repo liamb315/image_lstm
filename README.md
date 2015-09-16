@@ -40,6 +40,8 @@ The LSTM architecture may be tested by loading a trained model from the `snapsho
 th test_lstm.lua
 ```
 
+Properties of testing are set in the `opt` Lua table, similar to the one found in `train_lstm.lua`.
+
 # Questions
 1.  Representation is sparse at the hidden layer FC7, concerning?
 2.  Fix the max-sequence for each image (training and testing) and just generally devise a better strategy here.

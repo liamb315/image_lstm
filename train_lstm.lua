@@ -22,7 +22,7 @@ local opt = {print_every      = 1,
              output_size      = 10,
              savefile         = "snapshots/model_snapshot.t7",
              save_every       = 100,
-             seq_length       = 39,
+             seq_length       = 20,
              max_epochs       = 500,
              init_learn_rate  = 1E-1,
              learn_rate_decay = 1E-4  --https://github.com/torch/optim/blob/master/adagrad.lua
