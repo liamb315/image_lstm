@@ -1,5 +1,7 @@
 # Description
-LSTM architecture to evaluate sequences of images based off the Oxford LSTM Tutorial [practical 1 repository](https://github.com/oxford-cs-ml-2015/practical1).  For each property, we have multiple images and one label, corresponding to Selling Price decile or some other related task.  This architecture analyzes each image and then outputs the class label at the end as depicted in the ![Schematic]
+LSTM architecture to evaluate sequences of images based off the Oxford LSTM Tutorial [practical 1 repository](https://github.com/oxford-cs-ml-2015/practical1).  For each property, we have multiple images and one label, corresponding to Selling Price decile or some other related task.  This architecture analyzes each image and then outputs the class label at the end as depicted in the schematic: 
+
+![Schematic]
 (LSTM_model.png)
 
 # Work Flow
