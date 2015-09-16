@@ -8,7 +8,7 @@ There are two basic Lua functions, one for training `train_lstm.lua` and one for
 In the `raw/` directory, store the train and test CSVs separately.  For training, the CSVs should be of the format 
 
 | PropertyID    | ImageID     | Class Label |  Representation Columns (input) |
-| ------------- |-------------| ------------| --------------------------------|
+| ------------- |-------------| ------------| :------------------------------:|
 | propertyid_1  | imageid_1   |  class_int  |              Numbers            |
 | propertyid_2  | imageid_2   |  class_int  |              Numbers            |
 
@@ -26,9 +26,9 @@ th train.lua
 
 which will execute over the inputted files specified in the `opt` Lua table.  Additional specifications are provided here, however, one must match the following criteria in the table:
 
-1.  Sequence length `seq_length` must match the sequence length declared in R
-2.  The input size must `input_size` must match the dimension of the Representation Chosen
-3.  The output size `output_size` must match the number of classes provided
+1.  Sequence length `opt.seq_length` must match the sequence length declared in R
+2.  The input size must `opt.input_size` must match the dimension of the Representation Chosen
+3.  The output size `opt.output_size` must match the number of classes provided
 
 # Questions
 1.  Representation is sparse at the hidden layer FC7, concerning?
