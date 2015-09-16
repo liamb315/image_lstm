@@ -14,80 +14,77 @@ addRows <- function(dat, numRowsNeeded) {
   }
 }
 
-data <- read.csv('/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/raw/train_rnn_dictionary.txt')
-colnames(data)[1] <- 'PropertyID'
-colnames(data)[2] <- 'image_id'
-colnames(data)[3] <- 'trueDecile'
+# Train set
+train <- read.csv('/Users/liamf/lstm_data/train_rnn_dictionary.txt')
+colnames(train)[1] <- 'PropertyID'
+colnames(train)[2] <- 'ImageID'
+colnames(train)[3] <- 'TrueDecile'
 
-maxImages <- 39
+maxImages <- 20
 
-propertyVec <- unique(data$PropertyID)
+propertyVec <- unique(train$PropertyID)
+imageVec    <- unique(train$ImageID)
 
-repData <- data %>%
+repTrain <- train %>%
   group_by(PropertyID) %>%
   do({addRows(., maxImages)})
 
-x       <- repData[-c(1,2,3)]
-y       <- repData[,c(3)]
+x_train <- repTrain[-c(1,2,3)]
+y_train <- repTrain[,c(3)]
+y_train <- y_train + 1
 
-x_train <- x[1:10000,]
-y_train <- y[1:10000,]
-x_test  <- x[10001:20000,]
-y_test  <- y[10001:20000,]
+x_train_mini <- x_train[1:10000,]
+y_train_mini <- y_train[1:10000,]
 
-write.table(x_train, file="/Users/liamf/oxford_lstm/image_lstm/data/x_train_selldecile_mini.csv", sep = "," , row.names=FALSE)
-write.table(y_train, file="/Users/liamf/oxford_lstm/image_lstm/data/y_train_selldecile_mini.csv", sep = "," , row.names=FALSE)
-write.table(x_test , file="/Users/liamf/oxford_lstm/image_lstm/data/x_test_selldecile_mini.csv" , sep = "," , row.names=FALSE)
-write.table(y_test , file="/Users/liamf/oxford_lstm/image_lstm/data/y_test_selldecile_mini.csv" , sep = "," , row.names=FALSE)
+write.table(x_train_mini, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/x_train_selldecile_mini.csv", sep = "," , row.names=FALSE)
+write.table(y_train_mini, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/y_train_selldecile_mini.csv", sep = "," , row.names=FALSE)
 
 
 
+# Test set
+test  <- read.csv('/Users/liamf/lstm_data/test_rnn_dictionary.txt')
+colnames(test)[1] <- 'PropertyID'
+colnames(test)[2] <- 'ImageID'
+colnames(test)[3] <- 'TrueDecile'
 
-
-
-
-
-
-
-
-
-# OLD
-# Repeat the same property ID N-times
-image_lookup  <- read.csv('/Users/liamf/AmazonEC2/king_county/king_image_table.csv')
-data          <- read.table("~/Desktop/hidden_layer_output.txt", quote="\"", comment.char="")
-colnames(data)[1] <- 'image_id'
-colnames(data)[2] <- 'trueDecile'
-
-data <- merge(data, image_lookup, by="image_id")
-#data$predDecile <- NULL
-#data$trueDecile <- data$trueDecile + 1  # Lua is 1-indexed 
-
-maxImages <- data %>%
-             group_by(PropertyID) %>%
-             tally() %>%
-             filter(n == max(n)) %>%
-             select(n) %>%
-             unlist(use.names = FALSE)
-# TODO: Figure out why max images is not as expected
 maxImages <- 39
 
-propertyVec <- unique(data$PropertyID)
+propertyVec <- unique(test$PropertyID)
+imageVec    <- unique(test$ImageID)
 
-repData <- data %>%
-             group_by(PropertyID) %>%
-             do({addRows(., maxImages)})
+repTest <- test %>%
+  group_by(PropertyID) %>%
+  do({addRows(., maxImages)})
 
-x <- repData[-c(1,2,4099)]
-y <- repData[,c(2)]
+x_test <- repTest[-c(1,2,3)]
+y_test <- repTest[,c(3)]
+y_test <- y_test + 1
 
-x_train <- x[1:10000,]
-y_train <- y[1:10000,]
-x_test <- x[10001:20000,]
-y_test <- y[10001:20000,]
+x_test_mini  <- x_test[1:10000,]
+y_test_mini  <- y_test[1:10000,]
+write.table(x_test_mini , file="/Users/liamf/AmazonEC2oxford_lstm/image_lstm/data/x_test_selldecile_mini.csv" , sep = "," , row.names=FALSE)
+write.table(y_test_mini , file="/Users/liamf/AmazonEC2oxford_lstm/image_lstm/data/y_test_selldecile_mini.csv" , sep = "," , row.names=FALSE)
 
-write.table(x_train, file="/Users/liamf/lstm_data/x_train_mini.csv", sep = "," , row.names=FALSE)
-write.table(y_train, file="/Users/liamf/lstm_data/y_train_mini.csv", sep = "," , row.names=FALSE)
-write.table(x_test , file="/Users/liamf/lstm_data/x_test_mini.csv" , sep = "," , row.names=FALSE)
-write.table(y_test , file="/Users/liamf/lstm_data/y_test_mini.csv" , sep = "," , row.names=FALSE)
+
+# Figure out a better to handle this size
+test_mini <- test[1:1000,]
+
+repTest <- test_mini %>%
+  group_by(PropertyID) %>%
+  do({addRows(., maxImages)})
+
+x_test <- repTest[-c(1,2,3)]
+y_test <- repTest[,c(3)]
+y_test <- y_test + 1
+
+x_test_mini  <- x_test[1:10000,]
+y_test_mini  <- y_test[1:10000,]
+write.table(x_test_mini , file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/x_test_selldecile_mini.csv" , sep = "," , row.names=FALSE)
+write.table(y_test_mini , file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/y_test_selldecile_mini.csv" , sep = "," , row.names=FALSE)
+
+
+
+
+
 
 
