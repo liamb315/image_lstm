@@ -13,8 +13,8 @@ local CreateTensors = require 'CreateTensors'
 local opt = {print_every      = 1,
              csv_path         = "data/",
              tensor_path      = "tensors/",
-             x_csv            = "x_train_mini", --Just use 'filename' for 'filename.csv'
-             y_csv            = "y_train_mini", 
+             x_csv            = "x_train_selldecile_mini", --Just use 'filename' for 'filename.csv'
+             y_csv            = "y_train_selldecile_mini", 
              seed             = 1,
              batch_size       = 16,
              input_size       = 4096,

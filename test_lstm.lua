@@ -11,8 +11,8 @@ local opt = {seed        = 1,
 			 tensor_path = 'tensors/',
 			 output_path = 'output/',
 			 model       = 'snapshots/model_snapshot.t7',
-			 x_csv       = 'x_test_mini',  --Just use 'filename' for 'filename.csv'
-			 y_csv       = 'y_test_mini',  --Just use 'filename' for 'filename.csv'
+			 x_csv       = 'x_test_selldecile_mini',  --Just use 'filename' for 'filename.csv'
+			 y_csv       = 'y_test_selldecile_mini',  --Just use 'filename' for 'filename.csv'
 			 seq_length  = 39,
 			 batch_size  = 1,              -- TOOD: Check this
 			 input_size  = 4096,
