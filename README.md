@@ -1,5 +1,5 @@
 # Description
-LSTM architecture to evaluate sequences of images based off the Oxford LSTM Tutorial [practical 1 repository](https://github.com/oxford-cs-ml-2015/practical1).
+LSTM architecture to evaluate sequences of images based off the Oxford LSTM Tutorial [practical 1 repository](https://github.com/oxford-cs-ml-2015/practical1).  For each property, we have multiple images and one label, corresponding to Selling Price decile or some other related task.  This architecture analyzes each image and then outputs the class label at the end as depicted in the ![Schematic](LSTM_model.png).
 
 # Work Flow
 There are two basic Lua functions, one for training `train_lstm.lua` and one for testing the performance of the model `test_lstm.lua`.    
@@ -21,7 +21,7 @@ Both train and test operate on multidimensional [Torch Tensors](https://github.c
 From main directory, one can now call from the command line
 
 ```
-th train.lua
+th train_lstm.lua
 ```
 
 which will execute over the inputted files specified in the `opt` Lua table.  Additional specifications are provided here, however, one must match the following criteria in the table:
@@ -29,6 +29,13 @@ which will execute over the inputted files specified in the `opt` Lua table.  Ad
 1.  Sequence length `opt.seq_length` must match the sequence length declared in R
 2.  The input size must `opt.input_size` must match the dimension of the Representation Chosen
 3.  The output size `opt.output_size` must match the number of classes provided
+
+## Testing the LSTM Architecture
+The LSTM architecture may be tested by loading a trained model from the `snapshots/` directory and then executing
+
+```
+th test_lstm.lua
+```
 
 # Questions
 1.  Representation is sparse at the hidden layer FC7, concerning?
