@@ -14,7 +14,7 @@ local opt = {seed        = 1,
 			 x_csv       = 'x_test_mini',  --Just use 'filename' for 'filename.csv'
 			 y_csv       = 'y_test_mini',  --Just use 'filename' for 'filename.csv'
 			 seq_length  = 39,
-			 batch_size  = 3,              -- TOOD: Check this
+			 batch_size  = 1,              -- TOOD: Check this
 			 input_size  = 4096,
 			 rnn_size    = 256
 			}
@@ -23,8 +23,8 @@ print(opt)
 torch.manualSeed(opt.seed)
 
 -- Generate tensors (needed if the tensors are not already created)
-CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
-CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
+--CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
+--CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
 -- load data from tensors
 local x_tensor = opt.tensor_path .. opt.x_csv .. '.th7'
@@ -54,11 +54,14 @@ local prev_h = prev_c:clone()
 function evaluate_batch()
 	local batch_correct = 0
 
+	------------------ get minibatch -------------------
 	local x, y = loader:next_image_batch() 
-	print(y)
-	print(y[{{},15}])
+	--print(x)
+	
 
+	------------------ predict batch -------------------
 	for t = 1, seq_length do		
+		--print(x[{{}, t}])
 		local linear_net     = protos.linear:forward(x[{{}, t}])
 		local next_c, next_h = unpack(protos.lstm:forward{linear_net, prev_c, prev_h})
 		prev_c:copy(next_c)
@@ -68,9 +71,10 @@ function evaluate_batch()
 			local log_probs = protos.softmax:forward(next_h)
 			local _, argmax = torch.max(log_probs, 2)
 			
-			print('Actual    :', y[{{}, t}][1])
-			print('Prediction:', argmax[1][1])	
-			
+			--print('Actual    :', y[{{}, t}][1])
+			--print('Prediction:', argmax[1][1])	
+			print(y[{{}, t}][1], argmax[1][1])
+
 			if y[{{}, t}][1] == argmax[1][1] then
 				batch_correct = batch_correct + 1
 			end

@@ -32,7 +32,7 @@ maxImages <- data %>%
              filter(n == max(n)) %>%
              select(n) %>%
              unlist(use.names = FALSE)
-
+# TODO: Figure out why max images is not as expected
 maxImages <- 39
 
 propertyVec <- unique(data$PropertyID)
