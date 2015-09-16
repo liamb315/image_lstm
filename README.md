@@ -31,7 +31,7 @@ which will execute over the inputted files specified in the `opt` Lua table.  Ad
 
 1.  Sequence length `opt.seq_length` must match the sequence length declared in R
 2.  The input size must `opt.input_size` must match the dimension of the Representation Chosen
-3.  The output size `opt.output_size` must match the number of classes provided
+3.  The output size `opt.output_size` must match the number of classes provided (*classes must be 1-indexed!!*)
 
 ## Testing the LSTM Architecture
 The LSTM architecture may be tested by loading a trained model from the `snapshots/` directory and then executing
