@@ -45,3 +45,8 @@ Properties of testing are set in the `opt` Lua table, similar to the one found i
 # Questions
 1.  Representation is sparse at the hidden layer FC7, concerning?
 2.  Fix the max-sequence for each image (training and testing) and just generally devise a better strategy here.
+
+
+# TODO
+1.  Automatically detect if the torch tensors need to be created at the beginning of train/test
+2.  

@@ -13,8 +13,8 @@ local CreateTensors = require 'CreateTensors'
 local opt = {print_every      = 1,
              csv_path         = "data/",
              tensor_path      = "tensors/",
-             x_csv            = "x_train_selldecile_mini", --Just use 'filename' for 'filename.csv'
-             y_csv            = "y_train_selldecile_mini", 
+             x_csv            = "x_train_selldecile", --Just use 'filename' for 'filename.csv'
+             y_csv            = "y_train_selldecile", 
              seed             = 1,
              batch_size       = 16,
              input_size       = 4096,
@@ -32,8 +32,8 @@ print(opt)
 torch.manualSeed(opt.seed)
 
 -- Generate tensors (needed if the tensors are not already created)
---CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
---CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
+CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
+CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
 -- Load data from tensors
 local x_tensor = opt.tensor_path .. opt.x_csv .. '.th7'

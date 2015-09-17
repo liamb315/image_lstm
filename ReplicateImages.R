@@ -15,7 +15,7 @@ addRows <- function(dat, numRowsNeeded) {
 }
 
 # Train set
-train <- read.csv('/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/train_rnn_dictionary.txt')
+train <- read.csv('/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/raw/train_rnn_dictionary.txt')
 colnames(train)[1] <- 'PropertyID'
 colnames(train)[2] <- 'ImageID'
 colnames(train)[3] <- 'TrueDecile'
@@ -36,8 +36,8 @@ y_train <- y_train + 1
 x_train_mini <- x_train[1:10000,]
 y_train_mini <- y_train[1:10000,]
 
-write.table(x_train_mini, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/x_train_selldecile_mini.csv", sep = "," , row.names=FALSE)
-write.table(y_train_mini, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/y_train_selldecile_mini.csv", sep = "," , row.names=FALSE)
+write.table(x_train, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/x_train_selldecile.csv", sep = "," , row.names=FALSE)
+write.table(y_train, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/y_train_selldecile.csv", sep = "," , row.names=FALSE)
 
 
 
