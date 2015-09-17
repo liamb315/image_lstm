@@ -11,10 +11,10 @@ local opt = {seed        = 1,
 			 tensor_path = 'tensors/',
 			 output_path = 'output/',
 			 model       = 'snapshots/model_snapshot.t7',
-			 x_csv       = 'x_test_selldecile_mini',  --Just use 'filename' for 'filename.csv'
-			 y_csv       = 'y_test_selldecile_mini',  --Just use 'filename' for 'filename.csv'
+			 x_csv       = 'x_test_selldecile',  --Just use 'filename' for 'filename.csv'
+			 y_csv       = 'y_test_selldecile',  --Just use 'filename' for 'filename.csv'
 			 seq_length  = 20, 
-			 batch_size  = 2,              -- TOOD: Check this
+			 batch_size  = 1,              -- TOOD: Check this
 			 input_size  = 4096,
 			 rnn_size    = 256
 			}
@@ -23,8 +23,8 @@ print(opt)
 torch.manualSeed(opt.seed)
 
 -- Generate tensors (needed if the tensors are not already created)
---CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
---CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
+CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
+CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
 -- load data from tensors
 local x_tensor = opt.tensor_path .. opt.x_csv .. '.th7'
