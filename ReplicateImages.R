@@ -15,7 +15,7 @@ addRows <- function(dat, numRowsNeeded) {
 }
 
 # Train set
-train <- read.csv('/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/raw/train_rnn_dictionary.txt')
+train <- read.csv('/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/raw/train_rnn_prob_dictionary.txt')
 colnames(train)[1] <- 'PropertyID'
 colnames(train)[2] <- 'ImageID'
 colnames(train)[3] <- 'TrueDecile'
@@ -33,8 +33,8 @@ x_train <- repTrain[-c(1,2,3)]
 y_train <- repTrain[,c(3)]
 y_train <- y_train + 1
 
-write.table(x_train, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/x_train_selldecile.csv", sep = "," , row.names=FALSE)
-write.table(y_train, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/y_train_selldecile.csv", sep = "," , row.names=FALSE)
+write.table(x_train, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/train/x_train_prob_selldecile.csv", sep = "," , row.names=FALSE)
+write.table(y_train, file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/train/y_train_prob_selldecile.csv", sep = "," , row.names=FALSE)
 
 
 
@@ -53,26 +53,8 @@ x_test <- repTest[-c(1,2,3)]
 y_test <- repTest[,c(3)]
 y_test <- y_test + 1
 
-write.table(x_test , file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/x_test_selldecile.csv" , sep = "," , row.names=FALSE)
-write.table(y_test , file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/y_test_selldecile.csv" , sep = "," , row.names=FALSE)
-
-
-
-# Mini test example
-test_mini <- test[1:1000,]
-
-repTest <- test_mini %>%
-  group_by(PropertyID) %>%
-  do({addRows(., maxImages)})
-
-x_test <- repTest[-c(1,2,3)]
-y_test <- repTest[,c(3)]
-y_test <- y_test + 1
-
-x_test_mini  <- x_test[1:10000,]
-y_test_mini  <- y_test[1:10000,]
-write.table(x_test_mini , file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/x_test_selldecile_mini.csv" , sep = "," , row.names=FALSE)
-write.table(y_test_mini , file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/y_test_selldecile_mini.csv" , sep = "," , row.names=FALSE)
+write.table(x_test , file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/test/x_test_prob_selldecile.csv" , sep = "," , row.names=FALSE)
+write.table(y_test , file="/Users/liamf/AmazonEC2/oxford_lstm/image_lstm/data/test/y_test_prob_selldecile.csv" , sep = "," , row.names=FALSE)
 
 
 

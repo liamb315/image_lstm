@@ -11,7 +11,7 @@ local CreateTensors = require 'CreateTensors'
 
 -- Options of the model
 local opt = {print_every      = 1,
-             csv_path         = "data/",
+             csv_path         = "data/train/",
              tensor_path      = "tensors/",
              x_csv            = "x_train_selldecile", --Just use 'filename' for 'filename.csv'
              y_csv            = "y_train_selldecile", 
@@ -32,8 +32,8 @@ print(opt)
 torch.manualSeed(opt.seed)
 
 -- Generate tensors (needed if the tensors are not already created)
-CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
-CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
+--CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
+--CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
 -- Load data from tensors
 local x_tensor = opt.tensor_path .. opt.x_csv .. '.th7'
@@ -59,13 +59,7 @@ for name,proto in pairs(protos) do
     clones[name] = model_utils.clone_many_times(proto, opt.seq_length, not proto.parameters)
 end
 
--- LSTM initial state (zero initially, but final state gets sent to initial state when we do BPTT)
-local initstate_c   = torch.zeros(opt.batch_size, opt.rnn_size)
-local initstate_h   = initstate_c:clone()
 
--- LSTM final state's backward message (dloss/dfinalstate) is 0, since it doesn't influence predictions
-local dfinalstate_c = initstate_c:clone()
-local dfinalstate_h = initstate_c:clone()
 
 
 -- fwd/bwd and return loss, grad_params
@@ -75,10 +69,16 @@ function feval(params_)
     end
     grad_params:zero()
 
+    -- LSTM initial state (zero initially, but final state gets sent to initial state when we do BPTT)
+    local initstate_c   = torch.zeros(opt.batch_size, opt.rnn_size)
+    local initstate_h   = initstate_c:clone()
+    
+    -- LSTM final state's backward message (dloss/dfinalstate) is 0, since it doesn't influence predictions
+    local dfinalstate_c = initstate_c:clone()
+    local dfinalstate_h = initstate_c:clone()
+
     ------------------ get minibatch -------------------
     local x, y = loader:next_image_batch() 
-    --print('y')
-    --print(y)
 
     ------------------- forward pass -------------------
     local linear_nets = {}
@@ -102,9 +102,13 @@ function feval(params_)
         --print(lstm_c[t], lstm_h[t])
         
         -- Loss based only on the last example of sequence
+        
+        loss = loss + clones.criterion[t]:forward(predictions[t], y[{{}, t}])
+        --[[
         if t == opt.seq_length then
             loss = loss + clones.criterion[t]:forward(predictions[t], y[{{}, t}])
         end
+        --]]
     end
 
 
@@ -115,6 +119,7 @@ function feval(params_)
     local dlstm_h         = {}                                  -- output values of LSTM
 
     for t=opt.seq_length,1,-1 do
+        -- TODO: Modification for only final label
         -- Backprop through loss and softmax/linear
         local doutput_t = clones.criterion[t]:backward(predictions[t], y[{{}, t}])
 

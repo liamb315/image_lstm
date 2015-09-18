@@ -7,10 +7,10 @@ local CreateTensors = require 'CreateTensors'
 local ImageLoader   = require 'ImageLoader'
 
 local opt = {seed        = 1,
-			 csv_path    = 'data/',
+			 csv_path    = 'data/test/',
 			 tensor_path = 'tensors/',
 			 output_path = 'output/',
-			 model       = 'snapshots/model_snapshot.t7',
+			 model       = 'snapshots/model_snapshot_alllabels2.t7',
 			 x_csv       = 'x_test_selldecile',  --Just use 'filename' for 'filename.csv'
 			 y_csv       = 'y_test_selldecile',  --Just use 'filename' for 'filename.csv'
 			 seq_length  = 20, 
@@ -23,8 +23,8 @@ print(opt)
 torch.manualSeed(opt.seed)
 
 -- Generate tensors (needed if the tensors are not already created)
-CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
-CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
+--CreateTensors.generateTensors(opt.x_csv, opt.csv_path, opt.tensor_path)
+--CreateTensors.generateTensors(opt.y_csv, opt.csv_path, opt.tensor_path)
 
 -- load data from tensors
 local x_tensor = opt.tensor_path .. opt.x_csv .. '.th7'
@@ -43,12 +43,12 @@ local loader = ImageLoader.create(x_tensor, y_tensor, opt.batch_size, opt.seq_le
 ------------------- Predictions -------------------
 local seq_length = opt.seq_length
 
--- LSTM initial state, note that we're using minibatches OF SIZE ONE here
-local prev_c = torch.zeros(1, opt.rnn_size)
-local prev_h = prev_c:clone()
-
 
 function evaluate_batch()
+	-- LSTM initial state, note that we're using minibatches OF SIZE ONE here
+	local prev_c = torch.zeros(1, opt.rnn_size)
+	local prev_h = prev_c:clone()
+		
 	local batch_correct = 0
 
 	------------------ get minibatch -------------------
